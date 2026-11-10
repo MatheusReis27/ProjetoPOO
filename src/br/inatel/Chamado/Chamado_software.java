@@ -31,6 +31,4 @@ public class Chamado_software extends Chamado
         else
             return "Baixa";
     }
-
-
 }
