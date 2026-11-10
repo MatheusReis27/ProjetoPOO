@@ -3,6 +3,7 @@ package br.inatel.Serviço;
 import br.inatel.Chamado.Chamado;
 import br.inatel.Lista.Arquivo_chamados;
 import br.inatel.Lista.Lista_chamados;
+import br.inatel.Excecao.ChamadoResolvidoException;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class Central_chamados {
         return arquivo.carregar().paraArray();
     }
 
-    public void resolver(int numero) throws IOException {
+    public void resolver(int numero) throws IOException, ChamadoResolvidoException {
         Lista_chamados chamados = arquivo.carregar();
         chamados.buscar(numero).resolver();
         arquivo.salvar(chamados.paraArray());

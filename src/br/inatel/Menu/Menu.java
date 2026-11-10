@@ -1,21 +1,21 @@
-package br.inatel.menu;
+package br.inatel.Menu;
 
 import br.inatel.Chamado.Chamado;
 import br.inatel.Chamado.Chamado_hardware;
 import br.inatel.Chamado.Chamado_software;
 import br.inatel.Serviço.Central_chamados;
+import br.inatel.Excecao.ChamadoResolvidoException;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class Menu {
     private Central_chamados central;
-    private Scanner entrada;
+    private Teclado teclado;
 
     public Menu(Central_chamados central) {
         this.central = central;
-        this.entrada = new Scanner(System.in);
+        this.teclado = new Teclado();
     }
 
     public void executar() {
@@ -24,7 +24,7 @@ public class Menu {
                 exibirOpcoes();
 
                 try {
-                    switch (ler("Opção: ")) {
+                    switch (teclado.lerTexto("Opção: ")) {
                         case "1" -> cadastrar();
                         case "2" -> listar();
                         case "3" -> resolver();
@@ -33,14 +33,14 @@ public class Menu {
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Digite um número inteiro.");
-                } catch (IOException | IllegalArgumentException | IllegalStateException e) {
+                } catch (IOException | ChamadoResolvidoException | IllegalArgumentException e) {
                     System.out.println("Erro: " + e.getMessage());
                 }
             }
         } catch (NoSuchElementException e) {
             System.out.println("\nEntrada encerrada.");
         } finally {
-            entrada.close();
+            teclado.fechar();
         }
     }
 
@@ -48,31 +48,20 @@ public class Menu {
         System.out.println("\n1. Cadastrar chamado\n2. Listar chamados\n3. Resolver chamado\n0. Sair");
     }
 
-    private String ler(String pergunta) {
-        System.out.print(pergunta);
-        return entrada.nextLine().strip();
-    }
-
     private void cadastrar() throws IOException {
-        String tipo = ler("Tipo (1 = hardware, 2 = software): ");
+        String tipo = teclado.lerTexto("Tipo (1 = hardware, 2 = software): ");
 
         if (!tipo.equals("1") && !tipo.equals("2")) {
             throw new IllegalArgumentException("Tipo inválido.");
         }
 
-        String titulo = ler("Título: ");
+        String titulo = teclado.lerTexto("Título: ");
         Chamado chamado;
 
         if (tipo.equals("1")) {
-            String resposta = ler("Equipamento parou? (s/n): ").toLowerCase();
-
-            if (!resposta.equals("s") && !resposta.equals("n")) {
-                throw new IllegalArgumentException("Responda com s ou n.");
-            }
-
-            chamado = new Chamado_hardware(titulo, resposta.equals("s"));
+            chamado = new Chamado_hardware(titulo, teclado.lerSimNao("Equipamento parou? (s/n): "));
         } else {
-            chamado = new Chamado_software(titulo, Integer.parseInt(ler("Usuários afetados: ")));
+            chamado = new Chamado_software(titulo, teclado.lerInteiro("Usuários afetados: "));
         }
 
         central.cadastrar(chamado);
@@ -93,8 +82,8 @@ public class Menu {
         }
     }
 
-    private void resolver() throws IOException {
-        central.resolver(Integer.parseInt(ler("Número do chamado: ")));
+    private void resolver() throws IOException, ChamadoResolvidoException {
+        central.resolver(teclado.lerInteiro("Número do chamado: "));
         System.out.println("Chamado resolvido.");
     }
 }

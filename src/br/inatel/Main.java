@@ -1,7 +1,7 @@
 package br.inatel;
 
 import br.inatel.Lista.Arquivo_chamados;
-import br.inatel.menu.Menu;
+import br.inatel.Menu.Menu;
 import br.inatel.Serviço.Central_chamados;
 
 import java.nio.file.Path;

@@ -1,5 +1,6 @@
 package br.inatel.Chamado;
 
+import br.inatel.Excecao.ChamadoResolvidoException;
 
 public abstract class Chamado implements Priorizável
 {
@@ -25,7 +26,7 @@ public abstract class Chamado implements Priorizável
         return status.stringStatus();
     }
 
-    public void resolver(){
+    public void resolver() throws ChamadoResolvidoException {
         status.Resolver();
     }
 }
