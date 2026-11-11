@@ -5,7 +5,7 @@ import br.inatel.Excecao.ChamadoResolvidoException;
 public class Status_chamado
 
 {
-    public boolean resolvido;
+    private boolean resolvido;
 
     public Status_chamado()
     {
