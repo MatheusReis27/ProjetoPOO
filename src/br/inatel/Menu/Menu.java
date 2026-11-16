@@ -48,7 +48,7 @@ public class Menu {
         System.out.println("\n1. Cadastrar chamado\n2. Listar chamados\n3. Resolver chamado\n0. Sair");
     }
 
-    private void cadastrar() throws IOException {
+    private void cadastrar() throws IOException { //exception checada
         String tipo = teclado.lerTexto("Tipo (1 = hardware, 2 = software): ");
 
         if (!tipo.equals("1") && !tipo.equals("2")) {
